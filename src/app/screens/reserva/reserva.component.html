@@ -1,0 +1,51 @@
+<div class="p-6 bg-white rounded shadow">
+  <h2 class="text-2xl font-semibold mb-4 text-blue-700">Registrar Reserva</h2>
+  <form
+    class="grid md:grid-cols-2 gap-4"
+    (ngSubmit)="agregar()"
+    #reservaForm="ngForm"
+  >
+    <input
+      type="number"
+      [(ngModel)]="nuevaReserva.idMesa"
+      name="idMesa"
+      class="border p-2 rounded"
+      placeholder="ID Mesa"
+      required
+    />
+    <input
+      type="date"
+      [(ngModel)]="nuevaReserva.fechaReserva"
+      name="fechaReserva"
+      class="border p-2 rounded"
+      required
+    />
+    <input
+      type="time"
+      [(ngModel)]="nuevaReserva.horaReserva"
+      name="horaReserva"
+      class="border p-2 rounded"
+      required
+    />
+
+    <button
+      type="submit"
+      [disabled]="!reservaForm.form.valid"
+      class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 col-span-2"
+    >
+      Guardar
+    </button>
+  </form>
+
+  <h3 class="text-lg font-semibold mt-6 text-gray-800">Reservas Existentes</h3>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
+  <div *ngFor="let r of reservas" class="bg-white rounded-xl shadow-md p-4 border border-gray-200">
+    <h4 class="text-lg font-semibold text-blue-700 mb-2">Reserva</h4>
+    <p class="text-gray-800"><span class="font-medium">Cliente:</span> {{ r.idCliente }}</p>
+    <p class="text-gray-800"><span class="font-medium">Mesa:</span> {{ r.idMesa }}</p>
+    <p class="text-gray-800"><span class="font-medium">Fecha:</span> {{ r.fechaReserva }}</p>
+    <p class="text-gray-800"><span class="font-medium">Hora:</span> {{ r.horaReserva }}</p>
+  </div>
+</div>
+
+</div>
