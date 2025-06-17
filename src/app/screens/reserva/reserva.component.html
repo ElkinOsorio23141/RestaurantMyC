@@ -6,31 +6,36 @@
     class="bg-white p-6 rounded shadow space-y-4"
   >
     <div class="grid grid-cols-2 gap-4">
-<div>
-  <label class="block text-sm font-medium mb-1">Cliente</label>
-  <select
-    [(ngModel)]="reserva.idCliente"
-    name="idCliente"
-    class="w-full border rounded p-2"
-    required
-  >
-    <option value="">Seleccione un cliente</option>
-    <option *ngFor="let cliente of clientes" [value]="cliente.idCliente">
-      {{ cliente.nombreCliente }} {{ cliente.apellidosCliente}}
-    </option>
-  </select>
-</div>
-
-
       <div>
-        <label class="block text-sm font-medium">Mesa</label>
-        <input
-          type="number"
-          [(ngModel)]="reserva.idMesa"
-          name="idMesa"
+        <label class="block text-sm font-medium mb-1">Cliente</label>
+        <select
+          [(ngModel)]="reserva.idCliente"
+          name="idCliente"
+          id="idCliente"
           class="w-full border rounded p-2"
           required
-        />
+        >
+          <option value="">Seleccione un cliente</option>
+          <option *ngFor="let cliente of clientes" [value]="cliente.idCliente">
+            {{ cliente.nombreCliente }} {{ cliente.apellidosCliente }}
+          </option>
+        </select>
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium mb-1">Mesa</label>
+        <select
+          [(ngModel)]="reserva.idMesa"
+          name="idMesa"
+          id="idMesa"
+          class="w-full border rounded p-2"
+          required
+        >
+          <option value="">Seleccione una mesa</option>
+          <option *ngFor="let mesa of mesas" [value]="mesa.idMesa">
+            Mesa #{{ mesa.idMesa }}
+          </option>
+        </select>
       </div>
 
       <div>
@@ -87,8 +92,10 @@
     <tbody>
       <tr *ngFor="let r of reservas" class="border-t">
         <td class="px-4 py-2">{{ r.idReserva }}</td>
-        <td class="px-4 py-2">{{ r.idCliente }}</td>
-        <td class="px-4 py-2">{{ r.idMesa }}</td>
+        <td class="px-4 py-2">
+          {{ getNombreCliente(r.idCliente) }}
+        </td>
+        <td class="px-4 py-2">Mesa #{{ r.idMesa }}</td>
         <td class="px-4 py-2">{{ r.fechaReserva | date : "yyyy-MM-dd" }}</td>
         <td class="px-4 py-2">{{ r.horaReserva }}</td>
         <td class="px-4 py-2">

@@ -1,3 +1,4 @@
+import { Time } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
@@ -6,12 +7,12 @@ export interface Reserva {
   idReserva: number;
   idCliente: number;
   idMesa: number;
-  fechaReserva: string; // Formato: 'YYYY-MM-DD'
-  horaReserva: string;  // Formato: 'HH:mm:ss' (ISO string recomendado)
+  fechaReserva: Date; // Formato: 'YYYY-MM-DD'
+  horaReserva: string; // Formato: 'HH:mm:ss' (ISO string recomendado)
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ReservasService {
   private apiUrl = 'http://localhost:5062/api/reservas'; // Asegúrate de que este puerto y URL coincidan con tu backend
@@ -23,6 +24,9 @@ export class ReservasService {
   }
 
   agregar(reserva: Reserva): Observable<Reserva> {
+    reserva.idCliente = +reserva.idCliente;
+    reserva.idMesa = +reserva.idMesa;
+
     return this.http.post<Reserva>(`${this.apiUrl}/Agregar`, reserva);
   }
 

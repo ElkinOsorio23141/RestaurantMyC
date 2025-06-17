@@ -1,26 +1,114 @@
-<div class="p-6 bg-white rounded shadow">
-  <h2 class="text-2xl font-semibold mb-4 text-blue-700">Gestión de Platos</h2>
-  <form class="grid md:grid-cols-2 gap-4 mb-4">
-    <input
-      type="text"
-      class="border p-2 rounded"
-      placeholder="Nombre del plato"
-    />
-    <select class="border p-2 rounded">
-      <option>Categoría</option>
-      <option>Entrada</option>
-      <option>Plato fuerte</option>
-      <option>Bebida</option>
-    </select>
-    <input type="number" class="border p-2 rounded" placeholder="Precio" />
-    <select class="border p-2 rounded">
-      <option>Disponible</option>
-      <option>No disponible</option>
-    </select>
-  </form>
-  <button class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">
-    Agregar Plato
-  </button>
+<div class="p-6">
+  <h2 class="text-2xl font-bold mb-4">Gestión de Platos</h2>
 
-  <h3 class="text-lg font-semibold mt-8">Platos existentes</h3>
+  <form
+    (ngSubmit)="guardarPlato()"
+    class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6"
+  >
+    <!-- Nombre del Plato -->
+    <div>
+      <label class="block text-sm font-medium mb-1" for="nombrePlato"
+        >Nombre del Plato</label
+      >
+      <input
+        type="text"
+        id="nombrePlato"
+        [(ngModel)]="plato.nombrePlato"
+        name="nombrePlato"
+        placeholder="Ej: Bandeja Paisa"
+        class="w-full border p-2 rounded"
+        required
+      />
+    </div>
+
+    <!-- ID Categoría -->
+    <div>
+      <label class="block text-sm font-medium mb-1" for="nombrePlato"
+        >Categorias</label
+      >
+      <select
+        [(ngModel)]="plato.idCategoria"
+        name="idCategoria"
+        required
+        class="w-full border p-2 rounded"
+      >
+        <option *ngFor="let c of categorias" [value]="c.idCategoria">
+          {{ c.nombreCategoria }}
+        </option>
+      </select>
+    </div>
+
+    <!-- Precio -->
+    <div>
+      <label class="block text-sm font-medium mb-1" for="precio">Precio</label>
+      <input
+        type="number"
+        id="precio"
+        [(ngModel)]="plato.precio"
+        name="precio"
+        placeholder="Ej: 18000"
+        class="w-full border p-2 rounded"
+        required
+      />
+    </div>
+
+    <!-- Disponibilidad -->
+    <div class="flex items-center space-x-2 mt-6">
+      <input
+        type="checkbox"
+        id="disponibilidad"
+        [(ngModel)]="plato.disponibilidad"
+        name="disponibilidad"
+        class="form-checkbox"
+      />
+      <label for="disponibilidad" class="text-sm font-medium">Disponible</label>
+    </div>
+
+    <!-- Botón Guardar -->
+    <div class="md:col-span-2">
+      <button
+        type="submit"
+        class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 w-full"
+      >
+        {{ plato.idPlato === 0 ? "Agregar" : "Actualizar" }}
+      </button>
+    </div>
+  </form>
+
+  <!-- Tabla de Platos -->
+  <table class="w-full table-auto border-collapse border border-gray-300">
+    <thead>
+      <tr class="bg-gray-200 text-left">
+        <th class="border p-2">ID</th>
+        <th class="border p-2">Nombre</th>
+        <th class="border p-2">Categoría</th>
+        <th class="border p-2">Precio</th>
+        <th class="border p-2">Disponible</th>
+        <th class="border p-2">Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let p of platos" class="hover:bg-gray-100">
+        <td class="border p-2">{{ p.idPlato }}</td>
+        <td class="border p-2">{{ p.nombrePlato }}</td>
+        <td class="border p-2">{{ getNombreCategoria(p.idCategoria) }}</td>
+        <td class="border p-2">{{ formatearPesos(p.precio) }}</td>
+        <td class="border p-2">{{ p.disponibilidad ? "Sí" : "No" }}</td>
+        <td class="border p-2 flex gap-2">
+          <button
+            (click)="editar(p)"
+            class="bg-yellow-400 px-3 py-1 rounded hover:bg-yellow-500"
+          >
+            Editar
+          </button>
+          <button
+            (click)="eliminar(p.idPlato)"
+            class="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700"
+          >
+            Eliminar
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
 </div>
