@@ -13,6 +13,7 @@ import { DashboardComponent } from './screens/dashboard/dashboard.component';
 import { AppRoutingModule } from './app.routes';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { ClientesComponent } from './screens/clientes/clientes.component';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import { HttpClientModule } from '@angular/common/http';
     FiltroResenasComponent,
     PreferenciasClienteComponent,
     HistorialClienteComponent,
+    ClientesComponent,
     DashboardComponent
   ],
   imports: [

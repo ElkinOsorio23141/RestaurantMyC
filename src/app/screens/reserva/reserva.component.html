@@ -1,51 +1,111 @@
-<div class="p-6 bg-white rounded shadow">
-  <h2 class="text-2xl font-semibold mb-4 text-blue-700">Registrar Reserva</h2>
+<div class="p-6 max-w-4xl mx-auto">
+  <h2 class="text-2xl font-bold mb-6">Gestión de Reservas</h2>
+
   <form
-    class="grid md:grid-cols-2 gap-4"
-    (ngSubmit)="agregar()"
-    #reservaForm="ngForm"
+    (ngSubmit)="guardarReserva()"
+    class="bg-white p-6 rounded shadow space-y-4"
   >
-    <input
-      type="number"
-      [(ngModel)]="nuevaReserva.idMesa"
-      name="idMesa"
-      class="border p-2 rounded"
-      placeholder="ID Mesa"
-      required
-    />
-    <input
-      type="date"
-      [(ngModel)]="nuevaReserva.fechaReserva"
-      name="fechaReserva"
-      class="border p-2 rounded"
-      required
-    />
-    <input
-      type="time"
-      [(ngModel)]="nuevaReserva.horaReserva"
-      name="horaReserva"
-      class="border p-2 rounded"
-      required
-    />
-
-    <button
-      type="submit"
-      [disabled]="!reservaForm.form.valid"
-      class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 col-span-2"
-    >
-      Guardar
-    </button>
-  </form>
-
-  <h3 class="text-lg font-semibold mt-6 text-gray-800">Reservas Existentes</h3>
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
-  <div *ngFor="let r of reservas" class="bg-white rounded-xl shadow-md p-4 border border-gray-200">
-    <h4 class="text-lg font-semibold text-blue-700 mb-2">Reserva</h4>
-    <p class="text-gray-800"><span class="font-medium">Cliente:</span> {{ r.idCliente }}</p>
-    <p class="text-gray-800"><span class="font-medium">Mesa:</span> {{ r.idMesa }}</p>
-    <p class="text-gray-800"><span class="font-medium">Fecha:</span> {{ r.fechaReserva }}</p>
-    <p class="text-gray-800"><span class="font-medium">Hora:</span> {{ r.horaReserva }}</p>
-  </div>
+    <div class="grid grid-cols-2 gap-4">
+<div>
+  <label class="block text-sm font-medium mb-1">Cliente</label>
+  <select
+    [(ngModel)]="reserva.idCliente"
+    name="idCliente"
+    class="w-full border rounded p-2"
+    required
+  >
+    <option value="">Seleccione un cliente</option>
+    <option *ngFor="let cliente of clientes" [value]="cliente.idCliente">
+      {{ cliente.nombreCliente }} {{ cliente.apellidosCliente}}
+    </option>
+  </select>
 </div>
 
+
+      <div>
+        <label class="block text-sm font-medium">Mesa</label>
+        <input
+          type="number"
+          [(ngModel)]="reserva.idMesa"
+          name="idMesa"
+          class="w-full border rounded p-2"
+          required
+        />
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium">Fecha Reserva</label>
+        <input
+          type="date"
+          [(ngModel)]="reserva.fechaReserva"
+          name="fechaReserva"
+          class="w-full border rounded p-2"
+          required
+        />
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium">Hora Reserva</label>
+        <input
+          type="time"
+          [(ngModel)]="reserva.horaReserva"
+          name="horaReserva"
+          class="w-full border rounded p-2"
+          required
+        />
+      </div>
+    </div>
+
+    <div class="flex space-x-2 mt-4">
+      <button
+        type="submit"
+        class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+      >
+        Guardar
+      </button>
+      <button
+        type="button"
+        class="bg-gray-400 text-white px-4 py-2 rounded hover:bg-gray-500"
+        (click)="limpiar()"
+      >
+        Limpiar
+      </button>
+    </div>
+  </form>
+
+  <table class="table-auto w-full mt-6 bg-white shadow rounded">
+    <thead class="bg-gray-100 text-left">
+      <tr>
+        <th class="px-4 py-2">ID</th>
+        <th class="px-4 py-2">Cliente</th>
+        <th class="px-4 py-2">Mesa</th>
+        <th class="px-4 py-2">Fecha</th>
+        <th class="px-4 py-2">Hora</th>
+        <th class="px-4 py-2">Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let r of reservas" class="border-t">
+        <td class="px-4 py-2">{{ r.idReserva }}</td>
+        <td class="px-4 py-2">{{ r.idCliente }}</td>
+        <td class="px-4 py-2">{{ r.idMesa }}</td>
+        <td class="px-4 py-2">{{ r.fechaReserva | date : "yyyy-MM-dd" }}</td>
+        <td class="px-4 py-2">{{ r.horaReserva }}</td>
+        <td class="px-4 py-2">
+          <button
+            class="bg-yellow-500 text-white px-2 py-1 rounded mr-2"
+            (click)="editar(r)"
+          >
+            Editar
+          </button>
+          <button
+            class="bg-red-600 text-white px-2 py-1 rounded"
+            (click)="eliminar(r.idReserva)"
+          >
+            Eliminar
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
 </div>

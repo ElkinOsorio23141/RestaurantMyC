@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { Cliente, ClientesService } from 'src/app/services/clirentes.service';
 import { ReservasService } from 'src/app/services/reservas.service';
 
-interface Reserva {
+export interface Reserva {
+  idReserva: number;
   idCliente: number;
   idMesa: number;
   fechaReserva: string;
@@ -11,37 +13,69 @@ interface Reserva {
 @Component({
   selector: 'app-reserva',
   templateUrl: './reserva.component.html',
-  styleUrls: ['./reserva.component.css']
 })
 export class ReservaComponent implements OnInit {
-  reservas: Reserva[] = [];
-  nuevaReserva: Reserva = this.getNuevaReserva();
+    reserva: any = {
+    idReserva: 0,
+    idCliente: 0,
+    idMesa: 0,
+    fechaReserva: '',
+    horaReserva: ''
+  };
 
-  constructor(private reservasService: ReservasService) {}
+  reservas: any[] = [];
+  clientes: Cliente[] = [];
+
+  constructor(private reservasService: ReservasService, private clientesService: ClientesService) {}
 
   ngOnInit(): void {
     this.listar();
+    this.obtenerClientes();
   }
 
-  getNuevaReserva(): Reserva {
-    return {
+  listar(): void {
+    this.reservasService.listar().subscribe(data => {
+      this.reservas = data;
+    });
+  }
+
+    obtenerClientes(): void {
+    this.clientesService.listar().subscribe(data => {
+      this.clientes = data;
+    });
+  }
+
+  guardarReserva(): void {
+    if (this.reserva.idReserva === 0) {
+      this.reservasService.agregar(this.reserva).subscribe(() => {
+        this.listar();
+        this.limpiar();
+      });
+    } else {
+      this.reservasService.modificar(this.reserva).subscribe(() => {
+        this.listar();
+        this.limpiar();
+      });
+    }
+  }
+
+  editar(reserva: any): void {
+    this.reserva = { ...reserva };
+  }
+
+  eliminar(id: number): void {
+    this.reservasService.eliminar(id).subscribe(() => {
+      this.listar();
+    });
+  }
+
+  limpiar(): void {
+    this.reserva = {
+      idReserva: 0,
       idCliente: 0,
       idMesa: 0,
       fechaReserva: '',
       horaReserva: ''
     };
-  }
-
-  listar(): void {
-    this.reservasService.listar().subscribe(data => this.reservas = data);
-  }
-
-  agregar(): void {
-    if (this.nuevaReserva.idMesa && this.nuevaReserva.fechaReserva && this.nuevaReserva.horaReserva) {
-      this.reservasService.agregar(this.nuevaReserva).subscribe(() => {
-        this.listar();
-        this.nuevaReserva = this.getNuevaReserva(); // limpiar formulario
-      });
-    }
   }
 }

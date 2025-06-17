@@ -1,0 +1,83 @@
+<div class="max-w-4xl mx-auto p-6 bg-white rounded-xl shadow-md">
+  <h2 class="text-2xl font-bold text-blue-700 mb-4">Gestión de Clientes</h2>
+
+  <form
+    class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6"
+    (ngSubmit)="guardarCliente()"
+    #form="ngForm"
+  >
+    <input
+      [(ngModel)]="cliente.identificacionCliente"
+      name="identificacionCliente"
+      type="text"
+      placeholder="Identificación"
+      class="border p-2 rounded w-full"
+      required
+    />
+
+    <input
+      [(ngModel)]="cliente.nombreCliente"
+      name="nombreCliente"
+      type="text"
+      placeholder="Nombre"
+      class="border p-2 rounded w-full"
+      required
+    />
+
+    <input
+      [(ngModel)]="cliente.apellidosCliente"
+      name="apellidosCliente"
+      type="text"
+      placeholder="Apellidos"
+      class="border p-2 rounded w-full"
+      required
+    />
+
+    <input
+      [(ngModel)]="cliente.correo"
+      name="correo"
+      type="email"
+      placeholder="Correo"
+      class="border p-2 rounded w-full"
+      required
+    />
+
+    <input
+      [(ngModel)]="cliente.telefono"
+      name="telefono"
+      type="text"
+      placeholder="Teléfono"
+      class="border p-2 rounded w-full"
+      required
+    />
+
+    <button
+      type="submit"
+      class="bg-blue-600 text-white py-2 rounded hover:bg-blue-700 col-span-1 md:col-span-2"
+    >
+      {{ cliente.identificacionCliente ? "Modificar" : "Agregar" }}
+    </button>
+  </form>
+
+  <div class="grid gap-4">
+    <div
+      *ngFor="let c of clientes"
+      class="bg-gray-50 border rounded-lg p-4 shadow"
+    >
+      <p><strong>Identificación:</strong> {{ c.identificacionCliente }}</p>
+      <p>
+        <strong>Nombre:</strong> {{ c.nombreCliente }} {{ c.apellidosCliente }}
+      </p>
+      <p><strong>Correo:</strong> {{ c.correo }}</p>
+      <p><strong>Teléfono:</strong> {{ c.telefono }}</p>
+      <div class="mt-2 flex gap-2">
+        <button
+          class="text-sm text-blue-600 hover:underline"
+          (click)="editarCliente(c)"
+        >
+          Editar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
