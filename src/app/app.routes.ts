@@ -10,10 +10,12 @@ import { FiltroResenasComponent } from './screens/filtro-resenas/filtro-resenas.
 import { PreferenciasClienteComponent } from './screens/preferencias-cliente/preferencias-cliente.component';
 import { HistorialClienteComponent } from './screens/historial-cliente/historial-cliente.component';
 import { DashboardComponent } from './screens/dashboard/dashboard.component';
+import { ClientesComponent } from './screens/clientes/clientes.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
   { path: 'dashboard', component: DashboardComponent },
+  { path: 'clientes', component: ClientesComponent },
   { path: 'reserva', component: ReservaComponent },
   { path: 'menu-platos', component: MenuPlatosComponent },
   { path: 'pedidos', component: PedidosComponent },
