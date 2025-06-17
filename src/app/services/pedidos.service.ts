@@ -1,24 +1,39 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-
+import { Cliente } from './clirentes.service';
+import { Plato } from './platos.service';
+export interface Pedido {
+  idPedido: number;
+  numeroPedido: string;
+  idCliente: number;
+  idPlato: number;
+  fechaPedido: Date; // ISO string formato yyyy-MM-ddTHH:mm:ss
+  cantidad: number;
+  valorTotal: number;
+    // Propiedades de navegación opcionales
+  idClienteNavigation?: Cliente;
+  idPlatoNavigation?: Plato;
+}
 @Injectable({
   providedIn: 'root'
 })
 export class PedidosService {
   private apiUrl = 'http://localhost:5062/api/pedidos';
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
-  listar(): Observable<any> {
-      return this.http.get(`${this.apiUrl}/Listar`);
-    }
+  listar(): Observable<Pedido[]> {
+    return this.http.get<Pedido[]>(`${this.apiUrl}/Listar`);
+  }
 
-    agregar(pedido: any): Observable<any> {
+  agregar(pedido: Pedido): Observable<any> {
+    pedido.idCliente = +pedido.idCliente;
+    pedido.idPlato = +pedido.idPlato;
     return this.http.post(`${this.apiUrl}/Agregar`, pedido);
   }
 
-  modificar(pedido: any): Observable<any> {
+  modificar(pedido: Pedido): Observable<any> {
     return this.http.put(`${this.apiUrl}/Modificar`, pedido);
   }
 

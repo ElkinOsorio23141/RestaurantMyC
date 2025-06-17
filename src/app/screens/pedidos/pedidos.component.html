@@ -1,12 +1,142 @@
-<div class="p-6 bg-white rounded shadow">
-  <h2 class="text-2xl font-semibold mb-4 text-blue-700">Registrar Pedido</h2>
-  <form class="grid md:grid-cols-2 gap-4">
-    <input type="text" class="border p-2 rounded" placeholder="Nombre del cliente">
-    <input type="date" class="border p-2 rounded">
-    <input type="text" class="border p-2 rounded" placeholder="Platos solicitados">
-    <input type="number" class="border p-2 rounded" placeholder="Total">
-  </form>
-  <button class="mt-4 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Guardar Pedido</button>
+<div class="max-w-4xl mx-auto p-6 bg-white rounded-xl shadow-md">
+  <h2 class="text-2xl font-bold text-blue-700 mb-4">Gestión de Pedidos</h2>
 
-  <h3 class="text-lg font-semibold mt-8">Buscar Pedidos</h3>
+  <form
+    class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6"
+    (ngSubmit)="guardarPedido()"
+  >
+    <!-- Número Pedido -->
+    <div>
+      <label class="block text-sm font-medium mb-1">Número de Pedido</label>
+      <input
+        [(ngModel)]="pedido.numeroPedido"
+        name="numeroPedido"
+        type="text"
+        placeholder="Ej: PED001"
+        class="w-full border p-2 rounded"
+        required
+      />
+    </div>
+
+    <!-- Cliente -->
+    <div>
+      <label class="block text-sm font-medium mb-1">Cliente</label>
+      <select
+        [(ngModel)]="pedido.idCliente"
+        name="idCliente"
+        class="w-full border p-2 rounded"
+        required
+      >
+        <option *ngFor="let c of clientes" [value]="c.idCliente">
+          {{ c.nombreCliente }} {{ c.apellidosCliente }}
+        </option>
+      </select>
+    </div>
+
+    <!-- Plato -->
+    <div>
+      <label class="block text-sm font-medium mb-1">Plato</label>
+      <select
+        [(ngModel)]="pedido.idPlato"
+        name="idPlato"
+        class="w-full border p-2 rounded"
+        required
+      >
+        <option *ngFor="let p of platos" [value]="p.idPlato">
+          {{ p.nombrePlato }}
+        </option>
+      </select>
+    </div>
+
+    <!-- Fecha Pedido -->
+    <div>
+      <label class="block text-sm font-medium mb-1">Fecha del Pedido</label>
+      <input
+        [(ngModel)]="pedido.fechaPedido"
+        name="fechaPedido"
+        type="date"
+        class="w-full border p-2 rounded"
+        required
+      />
+    </div>
+
+    <!-- Cantidad -->
+    <div>
+      <label class="block text-sm font-medium mb-1">Cantidad</label>
+      <input
+        [(ngModel)]="pedido.cantidad"
+        name="cantidad"
+        type="number"
+        class="w-full border p-2 rounded"
+        required
+      />
+    </div>
+
+    <!-- Valor Total -->
+    <div>
+      <label class="block text-sm font-medium mb-1">Valor Total</label>
+      <input
+        [(ngModel)]="pedido.valorTotal"
+        name="valorTotal"
+        type="number"
+        class="w-full border p-2 rounded"
+        required
+      />
+    </div>
+
+    <div class="md:col-span-2">
+      <button
+        type="submit"
+        class="bg-blue-600 text-white py-2 rounded hover:bg-blue-700 w-full"
+      >
+        {{ pedido.idPedido === 0 ? "Agregar" : "Actualizar" }}
+      </button>
+    </div>
+  </form>
+
+  <!-- Tabla de pedidos -->
+  <table class="w-full table-auto border-collapse border border-gray-300">
+    <thead>
+      <tr class="bg-gray-200 text-left">
+        <th class="border p-2">#</th>
+        <th class="border p-2">Cliente</th>
+        <th class="border p-2">Plato</th>
+        <th class="border p-2">Fecha</th>
+        <th class="border p-2">Cantidad</th>
+        <th class="border p-2">Total</th>
+        <th class="border p-2">Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let ped of pedidos">
+        <td class="border p-2">{{ ped.numeroPedido }}</td>
+        <td class="px-4 py-2">
+          {{ getNombreCliente(ped.idCliente) }}
+        </td>
+        <td class="px-4 py-2">
+          {{ getNombrePlato(ped.idPlato) }}
+        </td>
+
+        <td class="border p-2">{{ ped.fechaPedido | date }}</td>
+        <td class="border p-2">{{ ped.cantidad }}</td>
+        <td class="border p-2">
+          {{ ped.valorTotal | currency : "COP" : "symbol" : "1.0-0" }}
+        </td>
+        <td class="border p-2 flex gap-2">
+          <button
+            (click)="editarPedido(ped)"
+            class="bg-yellow-400 px-3 py-1 rounded hover:bg-yellow-500"
+          >
+            Editar
+          </button>
+          <button
+            (click)="eliminarPedido(ped.idPedido)"
+            class="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700"
+          >
+            Eliminar
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
 </div>
